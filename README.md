@@ -31,7 +31,7 @@ venv\Scripts\activate
 source venv/bin/activate
 
 ## Instale as dependências
-pip install streamlit requests
+pip install -r requirements.txt
 
 # 3. Configurar Segredos da API
 A aplicação requer credenciais de API. Crie um diretório .streamlit na raiz do projeto e, dentro dele, crie um arquivo chamado secrets.toml.

@@ -26,7 +26,8 @@ def get_prediction(payload):
             return response.json()['Credit_Score']
         else:
             # Retorna 999 em caso de erro na requisição
-            return "999"
+            st.error(f"Erro requests: {response.status_code}")
+            return 999
     except requests.exceptions.RequestException as e:
         # Exibe uma mensagem de erro em caso de falha na conexão
         st.error(f"Erro de conexão: {e}")
@@ -62,7 +63,7 @@ with st.container():
     col1, col2, col3, col4, col5 = st.columns(5)
 
     with col1:
-        age = st.number_input("Idade do Cliente", min_value=18, max_value=100, value=30, step=1)
+        age = st.number_input("Idade do Cliente", min_value=18, max_value=100, value=18, step=1)
         annual_income = st.number_input("Renda Anual do Cliente (R$)", min_value=0, value=0, step=1000)
         monthly_inhand_salary = st.number_input("Salário Mensal Líquido (R$)", min_value=0, value=0, step=100)
         
