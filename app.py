@@ -44,7 +44,7 @@ st.set_page_config(
 )
 
 # --- Layout da Aplicação ---
-st.title("Quantum Finance - Credit Score Predictor 0 0.1")
+st.title("Quantum Finance - Credit Score Predictor - 0.1")
 st.markdown(
     """
     Esta aplicação permite que você faça a predição do credit score de um cliente com base em suas 
