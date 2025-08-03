@@ -23,7 +23,7 @@ def get_prediction(payload):
         # Verifica se a requisição foi bem-sucedida
         if response.status_code == 200:
             # Retorna o credit score da resposta JSON
-            return response.json()['Credit_Score']
+            return response.json()['prediction']
         else:
             # Retorna 999 em caso de erro na requisição
             st.error(f"Erro requests: {response.status_code}")
@@ -63,55 +63,57 @@ with st.container():
     col1, col2, col3, col4, col5 = st.columns(5)
 
     with col1:
-        age = st.number_input("Idade do Cliente", min_value=18, max_value=100, value=18, step=1)
-        annual_income = st.number_input("Renda Anual do Cliente (R$)", min_value=0, value=0, step=1000)
-        monthly_inhand_salary = st.number_input("Salário Mensal Líquido (R$)", min_value=0, value=0, step=100)
+        age = st.number_input("Idade do Cliente", min_value=18, max_value=100, value=25, step=1)
+        annual_income = st.number_input("Renda Anual do Cliente (R$)", min_value=0, value=39628, step=1000)
+        monthly_inhand_salary = st.number_input("Salário Mensal Líquido (R$)", min_value=0, value=3359, step=100)
         
     with col2:
-        num_bank_accounts = st.number_input("Número de Contas Bancárias", min_value=0, value=1, step=1)
-        num_credit_card = st.number_input("Número de Cartões de Crédito", min_value=0, value=1, step=1)
-        interest_rate = st.number_input("Taxa de Juros Anual (%)", min_value=0.0, value=0.0, step=0.1)
+        num_bank_accounts = st.number_input("Número de Contas Bancárias", min_value=0, value=4, step=1)
+        num_credit_card = st.number_input("Número de Cartões de Crédito", min_value=0, value=6, step=1)
+        interest_rate = st.number_input("Taxa de Juros Anual (%)", min_value=0.00, value=7.00, step=0.10)
         
     with col3:
-        delay_from_due_date = st.number_input("Atraso em relação data de vencimento (dias)", min_value=0, value=0, step=1)
-        num_of_delayed_payment = st.number_input("Número de Pagamentos Atrasados", min_value=0, value=0, step=1)
-        changed_credit_limit = st.number_input("Limite de Crédito Alterado (R$)", min_value=0, value=0, step=100)
+        delay_from_due_date = st.number_input("Atraso em relação data de vencimento (dias)", min_value=0, value=23, step=1)
+        num_of_delayed_payment = st.number_input("Número de Pagamentos Atrasados", min_value=0, value=7, step=1)
+        changed_credit_limit = st.number_input("Limite de Crédito Alterado (R$)", min_value=0.00, value=11.50, step=0.10)
         
     with col4:
-        num_credit_inquiries = st.number_input("Número de Consultas de Crédito", min_value=0, value=0, step=1)
-        credit_utilization_ratio = st.number_input("Taxa de Utilização de Crédito (%)", min_value=0.0, value=0.0, step=0.1)
-        total_emi_per_month = st.number_input("Total de EMI por Mês (R$)", min_value=0, value=0, step=100)
+        num_credit_inquiries = st.number_input("Número de Consultas de Crédito", min_value=0, value=3, step=1)
+        credit_utilization_ratio = st.number_input("Taxa de Utilização de Crédito (%)", min_value=0.00, value=34.66, step=0.10)
+        total_emi_per_month = st.number_input("Total de EMI por Mês (R$)", min_value=0, value=35, step=10)
         
     with col5:
-        amount_invested_monthly = st.number_input("Valor Investido Mensalmente (R$)", min_value=0, value=0, step=100)
-        monthly_balance = st.number_input("Saldo Mensal (R$)", min_value=0, value=0, step=100)
+        amount_invested_monthly = st.number_input("Valor Investido Mensalmente (R$)", min_value=0, value=60, step=100)
+        monthly_balance = st.number_input("Saldo Mensal (R$)", min_value=0, value=479, step=100)
 
 # --- Lógica de Predição e Resultado ---
 st.markdown("---")
 
 # Montagem do payload para enviar os dados para a API
 payload = {
-    'Age': f'{age}',
-    'Annual_Income': f"{annual_income}",
-    'Monthly_Inhand_Salary': f"{monthly_inhand_salary}",
-    'Num_Bank_Accounts': f"{num_bank_accounts}",
-    'Num_Credit_Card': f"{num_credit_card}",
-    'Interest_Rate': f"{interest_rate}",
-    'Delay_from_due_date': f"{delay_from_due_date}", 
-    'Num_of_Delayed_Payment': f"{num_of_delayed_payment}",
-    'Changed_Credit_Limit': f"{changed_credit_limit}", 
-    'Num_Credit_Inquiries': f"{num_credit_inquiries}",
-    'Credit_Utilization_Ratio': f"{credit_utilization_ratio}", 
-    'Total_EMI_per_month': f"{total_emi_per_month}",
-    'Amount_invested_monthly': f"{amount_invested_monthly}",
-    'Monthly_Balance': f"{monthly_balance}"
+    "data" : {
+        'Age': age,
+        'Annual_Income': annual_income,
+        'Monthly_Inhand_Salary': monthly_inhand_salary,
+        'Num_Bank_Accounts': num_bank_accounts,
+        'Num_Credit_Card': num_credit_card,
+        'Interest_Rate': interest_rate,
+        'Delay_from_due_date': delay_from_due_date, 
+        'Num_of_Delayed_Payment': num_of_delayed_payment,
+        'Changed_Credit_Limit': changed_credit_limit, 
+        'Num_Credit_Inquiries': num_credit_inquiries,
+        'Credit_Utilization_Ratio': credit_utilization_ratio, 
+        'Total_EMI_per_month': total_emi_per_month,
+        'Amount_invested_monthly': amount_invested_monthly,
+        'Monthly_Balance': monthly_balance
+    }
 }
 
 # Botão para fazer a previsão
 if st.button("Fazer Previsão"):
     # Enviar os dados para o endpoint da API
     with st.spinner("Calculando..."):
-        credit_score = int(get_prediction(payload))
+        credit_score = get_prediction(payload)
 
         # Usamos um container para mostrar o resultado da predição
         with st.container():
