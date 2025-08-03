@@ -44,7 +44,7 @@ st.set_page_config(
 )
 
 # --- Layout da Aplicação ---
-st.title("Quantum Finance - Credit Score Predictor")
+st.title("Quantum Finance - Credit Score Predictor 0 0.1")
 st.markdown(
     """
     Esta aplicação permite que você faça a predição do credit score de um cliente com base em suas 
@@ -128,5 +128,5 @@ if st.button("Fazer Previsão"):
             else:
                 st.error("Erro ao fazer a previsão. Tente novamente.", icon="❗️")
             st.markdown("---")
-            st.write("Payload enviado para a API:")
-            st.json(payload)
+            #st.write("Payload enviado para a API:")
+            #st.json(payload)
